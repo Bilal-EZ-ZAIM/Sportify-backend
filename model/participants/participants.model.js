@@ -15,11 +15,6 @@ const participantSchema = new Schema(
         "Le nom d'utilisateur ne doit pas dépasser 50 caractères",
       ],
     },
-    price: {
-      type: Number,
-      required: [true, "Le prix du ticket est requis"],
-      min: [0, "Le prix ne peut pas être inférieur à 0"],
-    },
     event: {
       type: Schema.Types.ObjectId,
       ref: "Event",
@@ -35,12 +30,7 @@ const participantSchema = new Schema(
         url: "https://www.w3schools.com/w3images/avatar2.png",
         id: null,
       },
-    },
-    payment_status: {
-      type: String,
-      enum: ["paid", "pending", "failed"],
-      required: [true, "Le statut du paiement est requis"],
-    },
+    }
   },
   {
     timestamps: true,
