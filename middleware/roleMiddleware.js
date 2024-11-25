@@ -14,14 +14,14 @@ const roleMiddleware = (role) => {
 
 module.exports = roleMiddleware;
 
-const roleMiddleware = require("./middlewares/roleMiddleware");
 
 
-app.get(
-  "/livreur/dashboard",
-  validateToken,
-  roleMiddleware("livreur"),
-  (req, res) => {
-    res.send("Welcome to the livreur dashboard");
-  }
-);
+
+// app.get(
+//   "/livreur/dashboard",
+//   validateToken,
+//   roleMiddleware("livreur"),
+//   (req, res) => {
+//     res.send("Welcome to the livreur dashboard");
+//   }
+// );

@@ -15,11 +15,13 @@ const getAllEvents = async (req, res) => {
       selectFields = "",
     } = req.query;
 
+    const parsedFilter =
+      typeof filter === "string" ? JSON.parse(filter) : filter;
     const data = await service.getAllEvents(
       Model,
       page,
       limit,
-      JSON.parse(filter),
+      parsedFilter,
       populate,
       selectFields
     );
@@ -51,11 +53,30 @@ const getEventById = async (req, res) => {
 // Endpoint pour créer un nouvel événement.
 const createEvent = async (req, res) => {
   try {
-    const data = await service.createEvent(Model, req.body);
+    const { name, date, location, description, participants, price } = req.body;
 
-    res.status(201).json(data);
+    const data = {
+      name,
+      description,
+      date,
+      location,
+      participants,
+      price,
+      organisateur: req.user.id,
+    };
+
+    const event = await service.createEvent(Model, data);
+
+    res.status(201).json({
+      message: "L'événement a été créé avec succès!",
+      event: event,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message:
+        "Une erreur est survenue lors de la création de l'événement. Veuillez réessayer plus tard.",
+      error: error.message,
+    });
   }
 };
 

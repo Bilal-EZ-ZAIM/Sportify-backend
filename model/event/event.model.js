@@ -33,6 +33,10 @@ const eventSchema = new Schema(
       required: [true, "Le prix de l'événement est requis"],
       min: [0, "Le prix ne peut pas être inférieur à 0"],
     },
+    participants: {
+      type: Number,
+      required: [true, "Le participants de l'événement est requis"],
+    },
     location: {
       type: String,
       required: [true, "Le lieu de l'événement est requis"],
