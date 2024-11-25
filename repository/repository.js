@@ -1,5 +1,7 @@
 // Repository functions for CRUD operations
 
+const checkEventOwnership = require("../middleware/checkEventOwnership");
+
 // Get all data with pagination and selected fields
 const getData = async (
   model,
@@ -51,10 +53,6 @@ const getDataById = async (model, id, populate = "", selectFields = "") => {
 // Create data
 const createData = async (model, data) => {
   try {
-    console.log("reposetory");
-
-    console.log(data);
-
     const createdItem = await model.create(data);
     return createdItem;
   } catch (error) {
@@ -72,6 +70,31 @@ const updateData = async (model, id, data) => {
     if (!updatedItem) {
       throw new Error("Item not found");
     }
+    return updatedItem;
+  } catch (error) {
+    throw new Error(`Error updating data: ${error.message}`);
+  }
+};
+
+const updateDataByOwner = async (model, id, data, userId) => {
+  try {
+    console.log("eeeeee")
+    const item = await model.findById(id);
+    console.log(userId);
+
+    console.log(userId);
+
+    if (!item) {
+      throw new Error("Item not found");
+    }
+
+    checkEventOwnership(userId, item.organisateur);
+
+    const updatedItem = await model.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
+
     return updatedItem;
   } catch (error) {
     throw new Error(`Error updating data: ${error.message}`);
@@ -130,4 +153,5 @@ module.exports = {
   searchData,
   getData,
   getDataById,
+  updateDataByOwner,
 };
