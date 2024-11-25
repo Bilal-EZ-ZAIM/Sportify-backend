@@ -26,7 +26,7 @@ const createEvent = async (model, data) => {
   return await repository.createData(model, data);
 };
 
-const updateEvent = async (model, id, data,userId) => {
+const updateEvent = async (model, id, data, userId) => {
   const updatedEvent = await repository.updateDataByOwner(
     model,
     id,
@@ -43,8 +43,8 @@ const updateEvent = async (model, id, data,userId) => {
   return updateEvent;
 };
 
-const deleteEvent = async (model, id) => {
-  return await repository.deleteData(model, id);
+const deleteEvent = async (model, id, userId) => {
+  return await repository.deleteDataByOwner(model, id, userId);
 };
 
 module.exports = {

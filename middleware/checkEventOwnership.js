@@ -7,7 +7,8 @@
  */
 const checkEventOwnership = (owner, eventOwner) => {
   if (owner.toString() !== eventOwner.toString()) {
-    throw new Error("You do not have permission to update this item");
+    throw new Error("Vous n'avez pas la permission d'effectuer cette action sur cet événement");
+
   }
 };
 

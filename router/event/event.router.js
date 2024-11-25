@@ -23,6 +23,6 @@ router.post("/event/create", validiteCreateEvent, createEvent);
 
 router.put("/event/update/:id", validitEventId, validiteUpdateEvent, updateEvent);
 
-router.delete("/event/:id", validitEventId, deleteEvent);
+router.delete("/event/delete/:id", validitEventId, deleteEvent);
 
 module.exports = router;
