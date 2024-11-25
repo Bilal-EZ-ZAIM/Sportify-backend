@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allo Media - Confirmation de Compte</title>
+    <style>
+      body {
+        background-color: #f3f4f6;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        background-color: #e5e7eb;
+      }
+
+      .email-content {
+        max-width: 600px;
+        width: 100%;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid #d1d5db;
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .logo img {
+        width: 150px;
+      }
+
+      .email-content h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 20px;
+      }
+
+      .email-content p {
+        font-size: 18px;
+        color: #4b5563;
+        margin: 15px 0;
+        line-height: 1.6;
+      }
+
+      .warning {
+        font-size: 16px;
+        color: #d97706;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      .btn-confirm {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #10b981;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 30px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-confirm:hover {
+        background-color: #059669;
+      }
+
+      .footer-text {
+        font-size: 14px;
+        color: #6b7280;
+        margin-top: 30px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 20px;
+      }
+
+      .footer-text a {
+        color: #3b82f6;
+        text-decoration: none;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .email-content {
+          padding: 20px;
+        }
+
+        .email-content h2 {
+          font-size: 24px;
+        }
+
+        .btn-confirm {
+          padding: 10px 20px;
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="email-content">
+        <!-- Logo Section -->
+        <div class="logo">
+          <img src="./logo1.png" alt="Allo Media Logo" />
+        </div>
+
+        <h2>Confirmez Votre Compte</h2>
+        <p>
+          Merci de rejoindre Allo Media ! Pour confirmer votre compte et activer
+          tous les avantages, veuillez cliquer sur le bouton ci-dessous.
+        </p>
+
+        <p class="warning">
+          Veuillez noter que vous avez 5 minutes pour valider votre compte, sinon
+          le lien expirera.
+        </p>
+
+        <a href="{{confirmationLink}}" class="btn-confirm">
+          Confirmer le Compte
+        </a>
+
+        <p class="footer-text">
+          Si vous n'avez pas créé de compte, veuillez ignorer cet e-mail.<br />
+          Pour toute assistance, contactez-nous à
+          <a href="mailto:support@allomedia.com">support@allomedia.com</a>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

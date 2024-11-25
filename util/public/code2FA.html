@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allo Media - Code de Validation 2FA</title>
+    <style>
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 20px;
+        }
+        h2 {
+          font-size: 20px;
+        }
+        p {
+          font-size: 14px;
+        }
+        .code {
+          font-size: 28px;
+        }
+      }
+
+      body {
+        background-color: #f9fafb;
+        font-family: Arial, sans-serif;
+        color: #374151;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        width: 100%;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border: 1px solid #e5e7eb;
+      }
+
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #111827;
+      }
+
+      p {
+        font-size: 16px;
+        color: #4b5563;
+        margin-top: 10px;
+        line-height: 1.6;
+      }
+
+      .code {
+        font-size: 36px;
+        font-weight: bold;
+        color: #10b981;
+        background-color: #f0fdf4;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 8px;
+        border: 1px solid #d1fae5;
+        letter-spacing: 5px;
+      }
+
+      .warning {
+        font-size: 14px;
+        color: #ef4444;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      .btn-resend {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #3b82f6;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        margin-top: 30px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-resend:hover {
+        background-color: #2563eb;
+      }
+
+      .footer-text {
+        font-size: 14px;
+        color: #6b7280;
+        margin-top: 20px;
+      }
+
+      .footer-text a {
+        color: #3b82f6;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      "
+    >
+      <div class="container">
+        <h2>Votre Code de Validation 2FA</h2>
+        <p>
+          Utilisez le code ci-dessous pour compléter votre connexion. Ce code
+          expirera dans 5 minutes.
+        </p>
+
+        <div class="code">{{code}}</div>
+
+        <p class="warning">Ce code n'est valide que pendant 5 minutes.</p>
+
+        <a href="{{resendLink}}" class="btn-resend">Réenvoyer le code</a>
+
+        <p class="footer-text">
+          Si vous n'avez pas demandé ce code, veuillez ignorer cet e-mail.<br />
+          Pour toute assistance, contactez-nous à
+          <a href="mailto:support@allomedia.com">support@allomedia.com</a>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
