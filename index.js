@@ -4,7 +4,10 @@ const dbConection = require("./config/database");
 const app = express();
 const authRouter = require("./router/auth/auth.router");
 const bookRouter = require("./router/book/book.router");
+const organisateurRouter = require("./router/event/event.router");
 const cors = require("cors");
+const verifyToken = require("./middleware/VerifyToken");
+const roleMiddleware = require("./middleware/roleMiddleware");
 dbConection();
 dotenv.config();
 
@@ -18,9 +21,16 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-app.use("/api/auth/", authRouter);
+app.use("/api/v1/auth/", authRouter);
 
 app.use("/api/", bookRouter);
+
+app.use(
+  "/api/v1/manager/",
+  verifyToken,
+  roleMiddleware("manager"),
+  organisateurRouter
+);
 
 app.use((err, req, res, next) => {
   return res.status(400).json({ err });

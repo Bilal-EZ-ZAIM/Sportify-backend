@@ -1,6 +1,6 @@
 const { check } = require("express-validator");
-const handelParamesError = require("../middleware/handelParamesError");
-const EventModel = require("../model/event/event.model");
+const handelParamesError = require("../../middleware/handelParamesError");
+const EventModel = require("../../model/event/event.model");
 
 // Validation pour les paramètres de l'ID de l'événement
 const validitEventId = [
@@ -38,9 +38,14 @@ const validiteCreateEvent = [
     .withMessage("Event location is too long"),
 
   check("description")
-    .optional()
+    .notEmpty()
+    .withMessage("Event description is required")
     .isLength({ max: 500 })
     .withMessage("Event description is too long"),
+
+  check("participants")
+    .notEmpty()
+    .withMessage("Event participants is required"),
 
   handelParamesError,
 ];

@@ -11,7 +11,7 @@ const regester = async (req, res) => {
   const data = req.body;
 
   try {
-    data.role = "client";
+    data.role = "manager";
     data.slug = slug(data.name);
 
     if (data.password) {
@@ -22,18 +22,18 @@ const regester = async (req, res) => {
 
     const user = await User.create(data);
 
-    const token = CreateToken({ id: user._id }, "5m");
+    const token = CreateToken({ id: user._id }, "90d");
 
-    const confirmationLink =
-      "http://localhost:8001/api/auth/verifyAcount/" + token;
+    // const confirmationLink =
+    //   "http://localhost:8001/api/auth/verifyAcount/" + token;
 
-    await envoyerEmail(
-      user.email,
-      "verfei accoute",
-      confirmationLink,
-      null,
-      "OTP"
-    );
+    // await envoyerEmail(
+    //   user.email,
+    //   "verfei accoute",
+    //   confirmationLink,
+    //   null,
+    //   "OTP"
+    // );
 
     return res.status(201).json({
       status: "success",
@@ -138,12 +138,12 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    if (!user.isVirefier) {
-      return res.status(404).json({
-        status: "fail",
-        message: "Email Or Password not correct.",
-      });
-    }
+    // if (!user.isVirefier) {
+    //   return res.status(404).json({
+    //     status: "fail",
+    //     message: "Email Or Password not correct.",
+    //   });
+    // }
 
     if (!user) {
       return res.status(404).json({
@@ -166,15 +166,15 @@ const login = async (req, res) => {
 
     const code = generateRandomCode();
 
-    const token = CreateToken({ id: user.id, code }, "5m");
+    const token = CreateToken({ id: user.id, code }, "90d");
 
-    await envoyerEmail(
-      user.email,
-      "verfei accoute par code",
-      (confirmationLink = null),
-      code,
-      "2FA"
-    );
+    // await envoyerEmail(
+    //   user.email,
+    //   "verfei accoute par code",
+    //   (confirmationLink = null),
+    //   code,
+    //   "2FA"
+    // );
 
     return res.status(201).json({
       message:
