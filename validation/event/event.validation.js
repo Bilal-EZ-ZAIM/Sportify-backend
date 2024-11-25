@@ -3,12 +3,12 @@ const handelParamesError = require("../middleware/handelParamesError");
 const EventModel = require("../model/event/event.model");
 
 // Validation pour les paramètres de l'ID de l'événement
-const ValiditEventId = [
+const validitEventId = [
   check("id").isMongoId().withMessage("Id is not valid"),
   handelParamesError,
 ];
 
-const ValiditeCreateEvent = [
+const validiteCreateEvent = [
   check("name")
     .notEmpty()
     .withMessage("Event name is required")
@@ -46,7 +46,7 @@ const ValiditeCreateEvent = [
 ];
 
 // Validation pour la mise à jour d'un événement
-const ValiditeUpdateEvent = [
+const validiteUpdateEvent = [
   check("name")
     .optional()
     .isLength({ min: 3 })
@@ -77,15 +77,8 @@ const ValiditeUpdateEvent = [
   handelParamesError,
 ];
 
-// Validation pour la suppression d'un événement
-const ValiditeDeleteEvent = [
-  check("id").isMongoId().withMessage("Id is not valid"),
-  handelParamesError,
-];
-
 module.exports = {
-  ValiditEventId,
-  ValiditeCreateEvent,
-  ValiditeUpdateEvent,
-  ValiditeDeleteEvent,
+  validitEventId,
+  validiteCreateEvent,
+  validiteUpdateEvent,
 };
