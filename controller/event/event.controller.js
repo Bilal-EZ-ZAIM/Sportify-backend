@@ -89,7 +89,6 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
-    
 
     const updatedEvent = await service.updateEvent(
       Model,
@@ -123,9 +122,9 @@ const deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const data = await service.deleteEvent(Model, id);
+    const data = await service.deleteEvent(Model, id, req.user._id);
 
-    res.status(200).json(data);
+    res.status(200).json({ message: "Event deleted successfully." });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

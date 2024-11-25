@@ -80,8 +80,6 @@ const updateDataByOwner = async (model, id, data, userId) => {
   try {
     const item = await model.findById(id);
 
-    console.log(userId);
-
     if (!item) {
       throw new Error("Item not found");
     }
@@ -102,6 +100,26 @@ const updateDataByOwner = async (model, id, data, userId) => {
 // Delete data by ID
 const deleteData = async (model, id) => {
   try {
+    const deletedItem = await model.findByIdAndDelete(id);
+    if (!deletedItem) {
+      throw new Error("Item not found");
+    }
+    return deletedItem;
+  } catch (error) {
+    throw new Error(`Error deleting data: ${error.message}`);
+  }
+};
+
+const deleteDataByOwner = async (model, id, userId) => {
+  try {
+    const item = await model.findById(id);
+
+    if (!item) {
+      throw new Error("Item not found");
+    }
+
+    checkEventOwnership(userId, item.organisateur);
+
     const deletedItem = await model.findByIdAndDelete(id);
     if (!deletedItem) {
       throw new Error("Item not found");
@@ -152,4 +170,5 @@ module.exports = {
   getData,
   getDataById,
   updateDataByOwner,
+  deleteDataByOwner,
 };
