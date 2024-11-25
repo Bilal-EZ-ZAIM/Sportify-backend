@@ -26,8 +26,23 @@ const createEvent = async (model, data) => {
   return await repository.createData(model, data);
 };
 
-const updateEvent = async (model, id, data) => {
-  return await repository.updateData(model, id, data);
+const updateEvent = async (model, id, data,userId) => {
+  // console.log(req.user);
+
+  const updatedEvent = await repository.updateDataByOwner(
+    model,
+    id,
+    data,
+    userId
+  );
+
+  console.log(userId);
+  if (!updatedEvent) {
+    return res
+      .status(404)
+      .json({ message: "Event not found. Please check the ID." });
+  }
+  return updateEvent;
 };
 
 const deleteEvent = async (model, id) => {

@@ -21,7 +21,7 @@ router.get("/event/:id", validitEventId, getEventById);
 
 router.post("/event/create", validiteCreateEvent, createEvent);
 
-router.put("/event/:id", validitEventId, validiteUpdateEvent, updateEvent);
+router.put("/event/update/:id", validitEventId, validiteUpdateEvent, updateEvent);
 
 router.delete("/event/:id", validitEventId, deleteEvent);
 

@@ -11,7 +11,10 @@ const getAllEvents = async (req, res) => {
       page = 1,
       limit = 10,
       filter = {},
-      populate = "",
+      populate = {
+        path: "organisateur",
+        select: "name email",
+      },
       selectFields = "",
     } = req.query;
 
@@ -86,12 +89,30 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
+    // console.log(req.user._id);
 
-    const data = await service.updateEvent(Model, id, req.body);
+    const updatedEvent = await service.updateEvent(
+      Model,
+      id,
+      req.body,
+      req.user._id
+    );
 
-    res.status(200).json(data);
+    res.status(200).json({
+      message: "Event updated successfully.",
+      data: updatedEvent,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.name === "ValidationError") {
+      res.status(400).json({
+        message: "Validation error occurred.",
+        details: error.errors,
+      });
+    } else {
+      res
+        .status(500)
+        .json({ message: `Error updating event: ${error.message}` });
+    }
   }
 };
 
