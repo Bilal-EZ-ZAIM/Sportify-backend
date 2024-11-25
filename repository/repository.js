@@ -78,9 +78,7 @@ const updateData = async (model, id, data) => {
 
 const updateDataByOwner = async (model, id, data, userId) => {
   try {
-    console.log("eeeeee")
     const item = await model.findById(id);
-    console.log(userId);
 
     console.log(userId);
 

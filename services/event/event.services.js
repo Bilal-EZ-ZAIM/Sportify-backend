@@ -27,8 +27,6 @@ const createEvent = async (model, data) => {
 };
 
 const updateEvent = async (model, id, data,userId) => {
-  // console.log(req.user);
-
   const updatedEvent = await repository.updateDataByOwner(
     model,
     id,

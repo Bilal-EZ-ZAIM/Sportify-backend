@@ -89,7 +89,7 @@ const createEvent = async (req, res) => {
 const updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
-    // console.log(req.user._id);
+    
 
     const updatedEvent = await service.updateEvent(
       Model,
