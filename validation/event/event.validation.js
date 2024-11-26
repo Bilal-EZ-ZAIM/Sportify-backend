@@ -1,7 +1,7 @@
 const { check } = require("express-validator");
 const handelParamesError = require("../../middleware/handelParamesError");
 const EventModel = require("../../model/event/event.model");
-const EventModel = require("../../model/event/event.model");
+
 
 // Validation pour les paramètres de l'ID de l'événement
 const validitEventId = [
