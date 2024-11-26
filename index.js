@@ -5,6 +5,7 @@ const app = express();
 const authRouter = require("./router/auth/auth.router");
 const bookRouter = require("./router/book/book.router");
 const organisateurRouter = require("./router/event/event.router");
+const participantsRouter = require("./router/participants/participants.router");
 const cors = require("cors");
 const verifyToken = require("./middleware/VerifyToken");
 const roleMiddleware = require("./middleware/roleMiddleware");
@@ -30,6 +31,13 @@ app.use(
   verifyToken,
   roleMiddleware("manager"),
   organisateurRouter
+);
+
+app.use(
+  "/api/v1/manager/",
+  verifyToken,
+  roleMiddleware("manager"),
+  participantsRouter
 );
 
 app.use((err, req, res, next) => {

@@ -6,9 +6,10 @@
  * @throws {Error} If the user does not own the event.
  */
 const checkEventOwnership = (owner, eventOwner) => {
-  if (owner.toString() !== eventOwner.toString()) {
-    throw new Error("Vous n'avez pas la permission d'effectuer cette action sur cet événement");
+  console.log(owner.toString(), eventOwner.toString());
 
+  if (owner.toString() !== eventOwner.toString()) {
+    throw new Error("Unauthorized: You do not own this event");
   }
 };
 
