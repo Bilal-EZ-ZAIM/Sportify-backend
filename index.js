@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const dbConection = require("./config/database");
 const app = express();
 const authRouter = require("./router/auth/auth.router");
-const bookRouter = require("./router/book/book.router");
 const organisateurRouter = require("./router/event/event.router");
 const participantsRouter = require("./router/participants/participants.router");
 const cors = require("cors");
@@ -30,7 +29,6 @@ app.get("/api", (req, res) => {
 
 app.use("/api/v1/auth/", authRouter);
 
-app.use("/api/", bookRouter);
 
 app.use(
   "/api/v1/manager/",
