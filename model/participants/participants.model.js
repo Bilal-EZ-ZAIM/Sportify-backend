@@ -20,6 +20,22 @@ const participantSchema = new Schema(
       ref: "Event",
       required: [true, "L'événement associé est requis"],
     },
+    organisateur: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "L'organisateur de l'événement est requis"],
+    },
+    email: {
+      type: String,
+      trim: true,
+      required: [true, "email required"],
+      lowercase: true,
+    },
+    phone: {
+      type: String,
+      trim: true,
+      required: [true, "Phone is required"],
+    },
     registered_at: {
       type: Date,
       default: Date.now,
@@ -30,7 +46,7 @@ const participantSchema = new Schema(
         url: "https://www.w3schools.com/w3images/avatar2.png",
         id: null,
       },
-    }
+    },
   },
   {
     timestamps: true,
