@@ -28,11 +28,6 @@ const eventSchema = new Schema(
       ref: "User",
       required: [true, "L'organisateur de l'événement est requis"],
     },
-    price: {
-      type: Number,
-      required: [true, "Le prix de l'événement est requis"],
-      min: [0, "Le prix ne peut pas être inférieur à 0"],
-    },
     participants: {
       type: Number,
       required: [true, "Le participants de l'événement est requis"],

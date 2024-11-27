@@ -22,6 +22,12 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+app.get("/api", (req, res) => {
+  res.status(200).json({
+    message: "Bonjour, backend opérationnel ! 🚀",
+  });
+});
+
 app.use("/api/v1/auth/", authRouter);
 
 app.use("/api/", bookRouter);

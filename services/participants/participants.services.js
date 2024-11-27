@@ -13,20 +13,38 @@ const checkUsername = async (data, managerId) => {
 
   checkEventOwnership(managerId, event.organisateur);
 
-  const username = await Participant.findOne({
+  const usernameExists = await Participant.findOne({
     username: data.username,
     event: data.event,
   });
 
-  if (username) {
+  const phoneExists = await Participant.findOne({
+    phone: data.phone,
+    event: data.event,
+  });
+
+  const emailExists = await Participant.findOne({
+    email: data.email,
+    event: data.event,
+  });
+
+  if (usernameExists) {
     throw new Error("Username is already taken for this event");
   }
+  if (emailExists) {
+    throw new Error("email is already taken for this event");
+  }
 
-  const eventdata = {
+  if (phoneExists) {
+    throw new Error("phone is already taken for this event");
+  }
+
+  const newParticipantData = {
     data,
     event,
   };
-  return eventdata;
+
+  return newParticipantData;
 };
 
 const getAllParticipants = async (
@@ -73,6 +91,8 @@ const updateParticipants = async (model, id, data, managerId) => {
   await checkUsername(data, managerId);
   const updateparticipant = {
     username: data.username,
+    email: data.email,
+    phone: data.phone,
   };
   return await repository.updateData(model, id, updateparticipant);
 };
