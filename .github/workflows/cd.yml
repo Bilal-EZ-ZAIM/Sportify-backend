@@ -1,0 +1,19 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull Docker image
+        run: sudo docker pull bilanox/sportify-backend:latest
+      - name: Delete Old docker container
+        run: sudo docker rm -f sportify-backend-container || true
+      - name: Run Docker Container
+        run: sudo docker run -d -p 8001:8001 --name sportify-backend-container bilanox/sportify-backend
