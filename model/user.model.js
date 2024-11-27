@@ -47,7 +47,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["livreur", "client", "manager"],
+      enum: ["client", "manager"],
       default: "client",
     },
     isVirefier: {

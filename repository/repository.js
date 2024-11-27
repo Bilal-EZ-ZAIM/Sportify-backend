@@ -1,5 +1,7 @@
 // Repository functions for CRUD operations
 
+const checkEventOwnership = require("../middleware/checkEventOwnership");
+
 // Get all data with pagination and selected fields
 const getData = async (
   model,
@@ -17,6 +19,7 @@ const getData = async (
       .select(selectFields)
       .populate(populate)
       .skip(skip)
+      .sort({ createdAt: -1 })
       .limit(limit);
 
     const totalRecords = await model.countDocuments(filter);
@@ -51,10 +54,6 @@ const getDataById = async (model, id, populate = "", selectFields = "") => {
 // Create data
 const createData = async (model, data) => {
   try {
-    console.log("reposetory");
-
-    console.log(data);
-
     const createdItem = await model.create(data);
     return createdItem;
   } catch (error) {
@@ -78,9 +77,50 @@ const updateData = async (model, id, data) => {
   }
 };
 
+const updateDataByOwner = async (model, id, data, userId) => {
+  try {
+    const item = await model.findById(id);
+
+    if (!item) {
+      throw new Error("Item not found");
+    }
+
+    checkEventOwnership(userId, item.organisateur);
+
+    const updatedItem = await model.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
+
+    return updatedItem;
+  } catch (error) {
+    throw new Error(`Error updating data: ${error.message}`);
+  }
+};
+
 // Delete data by ID
 const deleteData = async (model, id) => {
   try {
+    const deletedItem = await model.findByIdAndDelete(id);
+    if (!deletedItem) {
+      throw new Error("Item not found");
+    }
+    return deletedItem;
+  } catch (error) {
+    throw new Error(`Error deleting data: ${error.message}`);
+  }
+};
+
+const deleteDataByOwner = async (model, id, userId) => {
+  try {
+    const item = await model.findById(id);
+
+    if (!item) {
+      throw new Error("Item not found");
+    }
+
+    checkEventOwnership(userId, item.organisateur);
+
     const deletedItem = await model.findByIdAndDelete(id);
     if (!deletedItem) {
       throw new Error("Item not found");
@@ -130,4 +170,6 @@ module.exports = {
   searchData,
   getData,
   getDataById,
+  updateDataByOwner,
+  deleteDataByOwner,
 };
