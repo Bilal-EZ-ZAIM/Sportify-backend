@@ -13,7 +13,7 @@ const {
 } = require("../../validation/participants/participants.validation");
 const router = express.Router();
 
-router.get("/participants/:id",  validitId ,getAllParticipants);
+router.get("/participants", getAllParticipants);
 
 router.get("/participants/:id", validitId, getParticipantsById);
 
@@ -23,7 +23,12 @@ router.post(
   createParticipants
 );
 
-router.put("/participants/update/:id", validitId, validiteUpdateParticipants,updateParticipants);
+router.put(
+  "/participants/update/:id",
+  validitId,
+  // validiteUpdateParticipants,
+  updateParticipants
+);
 
 router.delete("/participants/delete/:id", validitId, deleteParticipants);
 

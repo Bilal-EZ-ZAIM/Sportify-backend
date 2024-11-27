@@ -16,7 +16,16 @@ const validiteCreateParticipants = [
     .withMessage("Participants username is too short")
     .isLength({ max: 50 })
     .withMessage("Participants username is too long"),
-
+  check("email")
+    .notEmpty()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Forma not email"),
+  check("phone")
+    .notEmpty()
+    .withMessage("Phone is required")
+    .isMobilePhone(["ar-MA"])
+    .withMessage("InValid phone number Moroco"),
   check("event").notEmpty().withMessage("event is required"),
 
   handelParamesError,
@@ -25,24 +34,14 @@ const validiteCreateParticipants = [
 // Validation pour la mise à jour d'un événement
 const validiteUpdateParticipants = [
   check("username")
-    .notEmpty()
-    .withMessage("Participants username is required")
     .isLength({ min: 3 })
     .withMessage("Participants username is too short")
     .isLength({ max: 50 })
     .withMessage("Participants username is too long"),
-
-  check("event")
-    .notEmpty()
-    .withMessage("event is required")
-    .custom(async (val) => {
-      console.log(val);
-
-      const existingEvent = await EventModel.find({ _id: val });
-      if (!existingEvent) {
-        return Promise.reject(new Error("Event not fond"));
-      }
-    }),
+  check("email").isEmail().withMessage("Forma not email"),
+  check("phone")
+    .isMobilePhone(["ar-MA"])
+    .withMessage("InValid phone number Moroco"),
 
   handelParamesError,
 ];
@@ -52,3 +51,5 @@ module.exports = {
   validiteCreateParticipants,
   validiteUpdateParticipants,
 };
+
+///

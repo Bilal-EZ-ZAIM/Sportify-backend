@@ -9,8 +9,8 @@ const getAllEvents = async (req, res) => {
   try {
     const {
       page = 1,
-      limit = 10,
-      filter = {},
+      limit = 6,
+      filter = { organisateur: req.user.id },
       populate = {
         path: "organisateur",
         select: "name email",
@@ -64,7 +64,6 @@ const createEvent = async (req, res) => {
       date,
       location,
       participants,
-      price,
       organisateur: req.user.id,
     };
 

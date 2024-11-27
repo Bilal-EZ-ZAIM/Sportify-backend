@@ -19,6 +19,7 @@ const getData = async (
       .select(selectFields)
       .populate(populate)
       .skip(skip)
+      .sort({ createdAt: -1 })
       .limit(limit);
 
     const totalRecords = await model.countDocuments(filter);

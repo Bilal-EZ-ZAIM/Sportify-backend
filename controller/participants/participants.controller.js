@@ -9,8 +9,11 @@ const getAllParticipants = async (req, res) => {
     const {
       page = 1,
       limit = 10,
-      filter = { event: req.params.id },
-      populate = "",
+      filter = {},
+      populate = {
+        path: "event",
+        select: "name",
+      },
       selectFields = "",
     } = req.query;
     const parsedFilter =
@@ -53,13 +56,24 @@ const getParticipantsById = async (req, res) => {
 // Create Participants
 const createParticipants = async (req, res) => {
   try {
-    const data = await service.createParticipants(
+    const { username, event, email, phone } = req.body;
+
+    const data = {
+      username,
+      event,
+      email,
+      phone,
+      organisateur: req.user.id,
+    };
+    const participant = await service.createParticipants(
       Model,
-      req.body,
+      data,
       req.user._id
     );
 
-    res.status(201).json({ message: "Participant created successfully", data });
+    res
+      .status(201)
+      .json({ message: "Participant created successfully", participant });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -69,6 +83,7 @@ const createParticipants = async (req, res) => {
 const updateParticipants = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
 
     const updatedParticipant = await service.updateParticipants(
       Model,
