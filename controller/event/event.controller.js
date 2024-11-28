@@ -56,7 +56,7 @@ const getEventById = async (req, res) => {
 // Endpoint pour créer un nouvel événement.
 const createEvent = async (req, res) => {
   try {
-    const { name, date, location, description, participants, price } = req.body;
+    const { name, date, location, description, participants } = req.body;
 
     const data = {
       name,
@@ -121,7 +121,7 @@ const deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const data = await service.deleteEvent(Model, id, req.user._id);
+     await service.deleteEvent(Model, id, req.user._id);
 
     res.status(200).json({ message: "Event deleted successfully." });
   } catch (error) {

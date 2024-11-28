@@ -12,10 +12,7 @@ dbConection();
 dotenv.config();
 
 const corsOptions = {
-  origin: [
-    "https://bilal-ez-zaim.github.io/Sportify-frontend/",
-    "http://localhost:5173/",
-  ],
+  origin: "https://bilal-ez-zaim.github.io/",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
