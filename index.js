@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-// const dbConection = require("./config/database");
+const dbConection = require("./config/database");
 const app = express();
 const authRouter = require("./router/auth/auth.router");
 const organisateurRouter = require("./router/event/event.router");
@@ -8,7 +8,7 @@ const participantsRouter = require("./router/participants/participants.router");
 const cors = require("cors");
 const verifyToken = require("./middleware/VerifyToken");
 const roleMiddleware = require("./middleware/roleMiddleware");
-// dbConection();
+dbConection();
 dotenv.config();
 
 const corsOptions = {
