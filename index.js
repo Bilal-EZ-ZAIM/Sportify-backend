@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.get("/api", (req, res) => {
   res.status(200).json({
-    message: "Bonjour, backend opérationnel ! 🚀sss",
+    message: "Bonjour, backend opérationnel ! s",
   });
 });
 
