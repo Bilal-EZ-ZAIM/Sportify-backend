@@ -34,7 +34,6 @@ const updateEvent = async (model, id, data, userId) => {
     userId
   );
 
-  console.log(userId);
   if (!updatedEvent) {
     return res
       .status(404)
