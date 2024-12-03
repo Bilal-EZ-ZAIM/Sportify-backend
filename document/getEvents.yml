@@ -1,0 +1,107 @@
+openapi: 3.0.0
+info:
+  title: API de gestion d'événements
+  description: |
+    Cette API permet d'accéder aux événements sportifs gérés par un organisateur. 
+    **Note :** Cette endpoint est privée et accessible uniquement aux utilisateurs ayant un rôle de **Manager**.
+  version: 1.0.0
+servers:
+  - url: https://sportfy.onrender.com/api/v1
+    description: Serveur principal
+
+paths:
+  /manager/event:
+    get:
+      summary: Récupérer la liste des événements
+      description: |
+        Cet endpoint permet de récupérer une liste paginée d'événements avec des informations détaillées sur chaque événement.  
+        **Accessible uniquement avec une authentification valide (Manager).**
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des événements récupérés avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: L'identifiant unique de l'événement
+                        name:
+                          type: string
+                          description: Le nom de l'événement
+                        description:
+                          type: string
+                          description: Une description détaillée de l'événement
+                        organisateur:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: L'identifiant unique de l'organisateur
+                            name:
+                              type: string
+                              description: Le nom de l'organisateur
+                            email:
+                              type: string
+                              description: L'email de l'organisateur
+                        participants:
+                          type: integer
+                          description: Le nombre de participants à l'événement
+                        location:
+                          type: string
+                          description: La localisation de l'événement
+                        date:
+                          type: string
+                          format: date-time
+                          description: La date et l'heure de l'événement
+                        event_image:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              description: URL de l'image associée à l'événement
+                            id:
+                              type: string
+                              nullable: true
+                              description: Identifiant Cloudinary de l'image
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Date de création de l'événement
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          description: Date de la dernière mise à jour de l'événement
+                        __v:
+                          type: integer
+                          description: Version de l'événement (pour MongoDB)
+                  totalRecords:
+                    type: integer
+                    description: Le nombre total d'enregistrements
+                  totalPages:
+                    type: integer
+                    description: Le nombre total de pages disponibles
+                  currentPage:
+                    type: integer
+                    description: La page actuelle
+        '401':
+          description: Authentification invalide ou non fournie
+        '403':
+          description: Accès refusé - utilisateur sans permissions nécessaires
+        '500':
+          description: Erreur serveur interne
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # JSON Web Token utilisé pour authentification

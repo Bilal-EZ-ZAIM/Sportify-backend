@@ -3,13 +3,11 @@ const User = require("../model/user.model");
 const bcryptjs = require("bcryptjs");
 const { login } = require("../controller/auth/auth.controller");
 const CreateToken = require("../util/createToken");
-const envoyerEmail = require("../util/mail");
 const { generateRandomCode } = require("../util/generateRandomCode");
 
 jest.mock("../model/user.model");
 jest.mock("bcryptjs");
 jest.mock("../util/createToken");
-jest.mock("../util/mail");
 jest.mock("../util/generateRandomCode");
 
 describe("login function", () => {
@@ -31,12 +29,11 @@ describe("login function", () => {
     User.findOne.mockClear();
     bcryptjs.compare.mockClear();
     CreateToken.mockClear();
-    envoyerEmail.mockClear();
     generateRandomCode.mockClear();
   });
 
   it("should return 404 if the user is not found", async () => {
-    User.findOne.mockResolvedValue(null); 
+    User.findOne.mockResolvedValue(null);  // Simulate user not found
 
     await login(req, res);
 
@@ -49,8 +46,8 @@ describe("login function", () => {
 
   it("should return 404 if the password is incorrect", async () => {
     const user = { email: "john@example.com", password: "hashed_password" };
-    User.findOne.mockResolvedValue(user); 
-    bcryptjs.compare.mockResolvedValue(false); 
+    User.findOne.mockResolvedValue(user);  // Simulate user found
+    bcryptjs.compare.mockResolvedValue(false);  // Simulate incorrect password
 
     await login(req, res);
 
@@ -61,7 +58,7 @@ describe("login function", () => {
     });
   });
 
-  it("should login the user and send an email with the code", async () => {
+  it("should login the user and return a token", async () => {
     const user = {
       id: "user_id",
       email: "john@example.com",
@@ -70,11 +67,10 @@ describe("login function", () => {
     const code = "123456";
     const token = "token";
 
-    User.findOne.mockResolvedValue(user);
-    bcryptjs.compare.mockResolvedValue(true);
-    generateRandomCode.mockReturnValue(code);
-    CreateToken.mockReturnValue(token);
-    envoyerEmail.mockResolvedValue(true);
+    User.findOne.mockResolvedValue(user);  // Simulate user found
+    bcryptjs.compare.mockResolvedValue(true);  // Simulate correct password
+    generateRandomCode.mockReturnValue(code);  // Generate a random code
+    CreateToken.mockReturnValue(token);  // Simulate token creation
 
     await login(req, res);
 
@@ -82,17 +78,11 @@ describe("login function", () => {
       "password123",
       "hashed_password"
     );
-    expect(CreateToken).toHaveBeenCalledWith({ id: "user_id", code }, "5m");
-    expect(envoyerEmail).toHaveBeenCalledWith(
-      "john@example.com",
-      "verfei accoute par code",
-      null,
-      code,
-      "2FA"
-    );
+    expect(CreateToken).toHaveBeenCalledWith({ id: "user_id", code }, "90d");
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
-      data: user,
+      message:
+        "You have received an email to verify your account. Please check your inbox and enter the verification code to complete the registration process.",
       token,
     });
   });

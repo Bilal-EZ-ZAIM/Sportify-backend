@@ -2,7 +2,6 @@ const { check } = require("express-validator");
 const handelParamesError = require("../../middleware/handelParamesError");
 const EventModel = require("../../model/event/event.model");
 
-
 // Validation pour les paramètres de l'ID de l'événement
 const validitEventId = [
   check("id").isMongoId().withMessage("Id is not valid"),
@@ -28,7 +27,14 @@ const validiteCreateEvent = [
     .notEmpty()
     .withMessage("Event date is required")
     .isISO8601()
-    .withMessage("Invalid event date format"),
+    .withMessage("Invalid event date format")
+    .custom(async (value) => {
+      const eventDate = new Date(value).getTime();
+      const currentDate = Date.now();
+      if (eventDate <= currentDate) {
+        return Promise.reject(new Error("Event date must be in the future"));
+      }
+    }),
 
   check("location")
     .notEmpty()

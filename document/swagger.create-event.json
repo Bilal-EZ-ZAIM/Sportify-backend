@@ -1,0 +1,176 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "API de Gestion d'Événements",
+      "description": "Cette documentation décrit l'API pour la création d'événements. Cette route est réservée uniquement aux organisateurs."
+    },
+    "host": "localhost:8001",
+    "basePath": "/api/v1",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/manager/event/create": {
+        "post": {
+          "tags": [
+            "Événements"
+          ],
+          "summary": "Créer un événement",
+          "description": "Cette route permet aux organisateurs de créer un nouvel événement.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "Authorization",
+              "required": true,
+              "type": "string",
+              "description": "Token Bearer pour l'authentification. Exemple: Bearer <votre_token>"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "required": true,
+              "description": "Les détails de l'événement à créer.",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Tournoi International"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Le Championnat National de Football rassemble les meilleures équipes du Maroc."
+                  },
+                  "organisateur": {
+                    "type": "string",
+                    "example": "6748417c9bc0c0ecea7f1593"
+                  },
+                  "participants": {
+                    "type": "integer",
+                    "example": 1234
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "Paris, France"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-05-15T17:00:00.000Z"
+                  },
+                  "event_image": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "example": "https://example.com/image.png"
+                      },
+                      "id": {
+                        "type": "string",
+                        "example": "yu819kzyagd9alu7lcsu"
+                      }
+                    }
+                  }
+                },
+                "required": ["name", "organisateur", "date"]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Succès! L'événement a été créé.",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "L'événement a été créé avec succès!"
+                  },
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Tournoi International"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Le Championnat National de Football..."
+                      },
+                      "organisateur": {
+                        "type": "string",
+                        "example": "6748417c9bc0c0ecea7f1593"
+                      },
+                      "participants": {
+                        "type": "integer",
+                        "example": 1234
+                      },
+                      "location": {
+                        "type": "string",
+                        "example": "Paris, France"
+                      },
+                      "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-05-15T17:00:00.000Z"
+                      },
+                      "event_image": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "example": "https://example.com/image.png"
+                          },
+                          "id": {
+                            "type": "string",
+                            "example": "yu819kzyagd9alu7lcsu"
+                          }
+                        }
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "67498a3bc47dd0874d716504"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-29T09:32:43.176Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-29T09:32:43.176Z"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Non autorisé. Token invalide ou manquant."
+            },
+            "400": {
+              "description": "Requête invalide. Vérifiez les données envoyées."
+            }
+          }
+        }
+      }
+    },
+    "definitions": {},
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Utilisez 'Bearer <votre_token>' pour authentifier."
+      }
+    }
+  }
+  

@@ -1,0 +1,152 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API de Gestion d'Événements",
+    "description": "Cette documentation décrit l'API pour récupérer des événements."
+  },
+  "host": "localhost:8001",
+  "basePath": "/api/v1",
+  "schemes": ["http"],
+  "paths": {
+    "/manager/event": {
+      "get": {
+        "tags": ["Événements"],
+        "summary": "Obtenir des événements",
+        "description": "Cette route permet de récupérer des événements avec pagination. Le paramètre `page` permet de spécifier la page, et `limit` le nombre d'éléments par page.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "required": false,
+            "description": "Numéro de page pour la pagination. Exemple : 2"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "required": false,
+            "description": "Nombre d'événements à afficher par page. Exemple : 1"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Token Bearer pour l'authentification. Exemple: Bearer <votre_token>"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès! Liste des événements.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "6748d0947008c9b284acb305"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Films action"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Films d'action"
+                      },
+                      "organisateur": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "6748417c9bc0c0ecea7f1593"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "bilal ezzaim"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "bilalzaim499@gmail.com"
+                          }
+                        }
+                      },
+                      "participants": {
+                        "type": "integer",
+                        "example": 204
+                      },
+                      "location": {
+                        "type": "string",
+                        "example": "Cads"
+                      },
+                      "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-25T00:00:00.000Z"
+                      },
+                      "event_image": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "example": "https://images.unsplash.com/photo-1569863959165-56dae551d4fc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                          },
+                          "id": {
+                            "type": "string",
+                            "example": "null"
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-28T20:20:36.466Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-28T21:14:44.807Z"
+                      }
+                    }
+                  }
+                },
+                "totalRecords": {
+                  "type": "integer",
+                  "example": 4
+                },
+                "totalPages": {
+                  "type": "integer",
+                  "example": 4
+                },
+                "currentPage": {
+                  "type": "string",
+                  "example": "2"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Non autorisé. Token invalide ou manquant."
+          },
+          "400": {
+            "description": "Requête invalide. Vérifiez les paramètres envoyés."
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Utilisez 'Bearer <votre_token>' pour authentifier."
+    }
+  }
+}

@@ -1,0 +1,115 @@
+paths:
+  /manager/event/update/{event_id}:
+    put:
+      summary: Mettre à jour un événement
+      description: |
+        Cet endpoint permet à un **Manager** de mettre à jour les détails d'un événement spécifique en fournissant l'ID de l'événement et les nouvelles informations.
+        **Accessible uniquement avec une authentification valide (Manager).**
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          description: L'ID de l'événement à mettre à jour.
+          schema:
+            type: string
+            example: 674c6fd02e24438ba937cf35
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nom de l'événement
+                  example: "Sportify"
+                description:
+                  type: string
+                  description: Description de l'événement
+                  example: "Le Championnat National de Football est un événement majeur qui rassemble les meilleures équipes de football du Maroc."
+                participants:
+                  type: integer
+                  description: Nombre de participants
+                  example: 2455
+                location:
+                  type: string
+                  description: Lieu de l'événement
+                  example: "Paris, France"
+                date:
+                  type: string
+                  format: date-time
+                  description: Date et heure de l'événement
+                  example: "2025-05-15T17:00:00.000Z"
+                event_image:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: URL de l'image de l'événement
+                      example: "https://res.cloudinary.com/dsldmzxqt/image/upload/v1733146499/tortiedty1mkqtff7kdi.png"
+                    id:
+                      type: string
+                      description: ID de l'image
+                      example: "tortiedty1mkqtff7kdi"
+      responses:
+        "200":
+          description: Événement mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message de confirmation
+                    example: "Event updated successfully."
+                  event:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: Identifiant de l'événement
+                        example: "674db7849ed4db3dbd4c6fc2"
+                      name:
+                        type: string
+                        description: Nom de l'événement
+                        example: "Sportify"
+                      description:
+                        type: string
+                        description: Description de l'événement
+                        example: "Le Championnat National de Football est un événement majeur qui rassemble les meilleures équipes de football du Maroc."
+                      participants:
+                        type: integer
+                        description: Nombre de participants
+                        example: 2455
+                      location:
+                        type: string
+                        description: Lieu de l'événement
+                        example: "Paris, France"
+                      date:
+                        type: string
+                        format: date-time
+                        description: Date et heure de l'événement
+                        example: "2025-05-15T17:00:00.000Z"
+                      event_image:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: URL de l'image de l'événement
+                            example: "https://res.cloudinary.com/dsldmzxqt/image/upload/v1733146499/tortiedty1mkqtff7kdi.png"
+                          id:
+                            type: string
+                            description: ID de l'image
+                            example: "tortiedty1mkqtff7kdi"
+        "400":
+          description: Mauvaise demande (par exemple, données manquantes ou invalides)
+        "401":
+          description: Authentification invalide ou manquante
+        "403":
+          description: Accès interdit, vous n'êtes pas autorisé à mettre à jour cet événement
+        "404":
+          description: L'événement n'a pas été trouvé
+        "500":
+          description: Erreur interne du serveur

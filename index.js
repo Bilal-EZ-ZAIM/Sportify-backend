@@ -8,14 +8,13 @@ const participantsRouter = require("./router/participants/participants.router");
 const cors = require("cors");
 const verifyToken = require("./middleware/VerifyToken");
 const roleMiddleware = require("./middleware/roleMiddleware");
+const uploadRouter = require("./router/uploadfileRouter");
+const path = require("path");
 dbConection();
 dotenv.config();
 
 const corsOptions = {
-  origin: [
-    "https://bilal-ez-zaim.github.io/Sportify-frontend/",
-    "http://localhost:5173/",
-  ],
+  origin: "http://localhost:5173",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
@@ -30,7 +29,10 @@ app.get("/api", (req, res) => {
   });
 });
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use("/api/v1/auth/", authRouter);
+app.use("/api", uploadRouter);
 
 app.use(
   "/api/v1/manager/",

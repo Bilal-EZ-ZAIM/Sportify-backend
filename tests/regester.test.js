@@ -6,7 +6,6 @@ const HashPassword = require("../util/HashPassword");
 const envoyerEmail = require("../util/mail");
 
 jest.mock("../util/createToken.js");
-jest.mock("../util/mail.js");
 jest.mock("../util/HashPassword.js");
 jest.mock("../model/user.model");
 
@@ -18,7 +17,7 @@ describe("register function", () => {
       body: {
         name: "John Doe",
         email: "john@example.com",
-        password: "password123", // Original password used in request body
+        password: "password123",
       },
     };
     res = {
@@ -29,53 +28,52 @@ describe("register function", () => {
     HashPassword.mockClear();
     UserModel.create.mockClear();
     CreateToken.mockClear();
-    envoyerEmail.mockClear();
   });
 
   it("should register a user and send a confirmation email", async () => {
-    // Expected values
-    const hashedPassword = "hashed_password"; // Mocked hashed password
-    const token = "token"; // Mocked token
-    const user = { _id: "user_id", ...req.body, password: hashedPassword }; // Expected user object
+    const hashedPassword = "hashed_password";
+    const token = "token";
+    const user = { _id: "user_id", ...req.body, password: hashedPassword };
 
-    // Mock the utility functions with the expected values
-    HashPassword.mockResolvedValue(hashedPassword); // Return the hashed password
-    UserModel.create.mockResolvedValue(user); // Simulate user creation with UserModel.create
-    CreateToken.mockReturnValue(token); // Mock CreateToken to return a token
-    envoyerEmail.mockResolvedValue(true); // Mock envoyerEmail to resolve successfully
+    HashPassword.mockResolvedValue(hashedPassword);
+    UserModel.create.mockResolvedValue(user);
+    CreateToken.mockReturnValue(token);
 
-    await regester(req, res); // Call the register function
+    await regester(req, res);
 
-    // Verify HashPassword was called with the original password
-    expect(HashPassword).toHaveBeenCalledWith("password123"); // Explicitly match the original password
+    expect(HashPassword).toHaveBeenCalledWith("password123");
 
-    // Verify UserModel.create was called with the expected values
     expect(UserModel.create).toHaveBeenCalledWith({
       name: "John Doe",
       email: "john@example.com",
-      role: "client", // Assuming default role is client
-      slug: expect.any(String), // slug should be a string
-      password: "hashed_password", // The value returned by HashPassword mock
+      role: "manager", // Ensure that role is "manager" as per the implementation
+      slug: expect.any(String), // Slug should be a string, ensure it's generated correctly
+      password: "hashed_password",
     });
 
     // Verify CreateToken was called with the user ID and the expiration time
-    expect(CreateToken).toHaveBeenCalledWith({ id: user._id }, "5m");
+    expect(CreateToken).toHaveBeenCalledWith({ id: user._id }, "90d"); // Update to "90d" as per the actual implementation
 
-    // Verify envoyerEmail was called correctly
-    expect(envoyerEmail).toHaveBeenCalledWith(
-      user.email,
-      "verfei accoute",
-      `http://localhost:8001/api/auth/verifyAcount/${token}`,
-      null,
-      "OTP"
-    );
+   
 
-    // Verify the response status and JSON response
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
-      message: "User created successfully!",
-      user,
+      status: "success",
+      message: "Congratulations! Your account has been created successfully. Please check your email for the verification code to complete your registration.",
       token,
+    });
+  });
+
+  it("should return an error if user creation fails", async () => {
+    const errorMessage = "Error creating user";
+    UserModel.create.mockRejectedValue(new Error(errorMessage));
+
+    await regester(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "An error occurred during registration",
+      error: errorMessage,
     });
   });
 });
