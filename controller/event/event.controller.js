@@ -58,6 +58,16 @@ const createEvent = async (req, res) => {
   try {
     const { name, date, location, description, participants } = req.body;
 
+    const eventImage = req.file
+      ? {
+          url: req.file.secure_url,
+          id: req.file.public_id, 
+        }
+      : {
+          url: `https://images.unsplash.com/photo-1569863959165-56dae551d4fc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`, // الصورة الافتراضية
+          id: null, 
+        };
+
     const data = {
       name,
       description,
@@ -65,6 +75,7 @@ const createEvent = async (req, res) => {
       location,
       participants,
       organisateur: req.user.id,
+      event_image: eventImage,
     };
 
     const event = await service.createEvent(Model, data);
@@ -121,7 +132,7 @@ const deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
 
-     await service.deleteEvent(Model, id, req.user._id);
+    await service.deleteEvent(Model, id, req.user._id);
 
     res.status(200).json({ message: "Event deleted successfully." });
   } catch (error) {

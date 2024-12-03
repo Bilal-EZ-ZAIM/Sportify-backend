@@ -1,23 +1,26 @@
-const { createEvent } = require("../controller/event/event.controller");
 const service = require("../services/event/event.services");
+const { createEvent } = require("../controller/event/event.controller");
 
-jest.mock("../services/event/event.services.js");
+jest.mock("../services/event/event.services");
 
-describe("createEvent", () => {
+describe("Test Unit for createEvent Controller", () => {
   let req, res;
 
   beforeEach(() => {
     req = {
       body: {
-        name: "Test Event",
-        date: "2024-12-01",
-        location: "Test Location",
-        description: "Test Description",
-        participants: ["user1", "user2"],
-        price: 100,
+        name: "Event Name",
+        date: "2024-12-31",
+        location: "Event Location",
+        description: "Event Description",
+        participants: ["Participant1", "Participant2"],
+      },
+      file: {
+        secure_url: "http://example.com/image.jpg",
+        public_id: "image123",
       },
       user: {
-        id: "organisateur_id",
+        id: "user123",
       },
     };
 
@@ -25,30 +28,31 @@ describe("createEvent", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
+  });
 
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should create an event successfully", async () => {
-    // Mocking the service response
-    const mockEvent = {
-      id: "event_id",
-      ...req.body,
-      organisateur: req.user.id,
-    };
+  it("should create an event successfully with provided image", async () => {
+    const mockEvent = { id: "event123", ...req.body };
     service.createEvent.mockResolvedValue(mockEvent);
 
-    // Call the function
     await createEvent(req, res);
 
     expect(service.createEvent).toHaveBeenCalledWith(expect.anything(), {
-      name: "Test Event",
-      date: "2024-12-01",
-      location: "Test Location",
-      description: "Test Description",
-      participants: ["user1", "user2"],
-      organisateur: "organisateur_id",
+      name: req.body.name,
+      description: req.body.description,
+      date: req.body.date,
+      location: req.body.location,
+      participants: req.body.participants,
+      organisateur: req.user.id,
+      event_image: {
+        url: req.file.secure_url,
+        id: req.file.public_id,
+      },
     });
+
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({
       message: "L'événement a été créé avec succès!",
@@ -56,20 +60,40 @@ describe("createEvent", () => {
     });
   });
 
-  it("should handle errors gracefully", async () => {
+  it("should create an event successfully with default image if no file is provided", async () => {
+    req.file = null;
+    const mockEvent = { id: "event123", ...req.body };
+    service.createEvent.mockResolvedValue(mockEvent);
+
+    await createEvent(req, res);
+
+    expect(service.createEvent).toHaveBeenCalledWith(expect.anything(), {
+      name: req.body.name,
+      description: req.body.description,
+      date: req.body.date,
+      location: req.body.location,
+      participants: req.body.participants,
+      organisateur: req.user.id,
+      event_image: {
+        url: expect.stringContaining("https://images.unsplash.com"),
+        id: null,
+      },
+    });
+
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "L'événement a été créé avec succès!",
+      event: mockEvent,
+    });
+  });
+
+  it("should return an error if service.createEvent throws an exception", async () => {
     const mockError = new Error("Database error");
     service.createEvent.mockRejectedValue(mockError);
 
     await createEvent(req, res);
 
-    expect(service.createEvent).toHaveBeenCalledWith(expect.anything(), {
-      name: "Test Event",
-      date: "2024-12-01",
-      location: "Test Location",
-      description: "Test Description",
-      participants: ["user1", "user2"],
-      organisateur: "organisateur_id",
-    });
+    expect(service.createEvent).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       message:

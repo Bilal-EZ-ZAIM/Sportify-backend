@@ -9,7 +9,7 @@ const getAllParticipants = async (req, res) => {
     const {
       page = 1,
       limit = 10,
-      filter = {},
+      filter = { organisateur: req.user.id },
       populate = {
         path: "event",
         select: "name",

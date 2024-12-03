@@ -19,7 +19,7 @@ describe("getAllParticipants Controller", () => {
       query: {
         page: 1,
         limit: 10,
-        filter: JSON.stringify({ organisateur: "mockUserId" }),
+        filter: { organisateur: "mockUserId" },
         populate: {
           path: "event",
           select: "name",
@@ -42,8 +42,8 @@ describe("getAllParticipants Controller", () => {
   test("should return data successfully when service resolves", async () => {
     const mockData = {
       events: [
-        { id: "event1", name: "Event 1", organisateur: "mockUserId" },
-        { id: "event2", name: "Event 2", organisateur: "mockUserId" },
+        { id: "participant1", name: "participant 1", event: "mockEventId" },
+        { id: "participant2", name: "participant 2", event: "mockEventId" },
       ],
       total: 2,
       page: 1,
@@ -57,11 +57,11 @@ describe("getAllParticipants Controller", () => {
     expect(service.getAllParticipants).toHaveBeenCalledWith(
       Model,
       1,
-      6,
+      10,
       { organisateur: "mockUserId" },
       {
-        path: "organisateur",
-        select: "name email",
+        path: "event",
+        select: "name",
       },
       ""
     );

@@ -1,0 +1,139 @@
+paths:
+  /manager/event/create:
+    post:
+      summary: Créer un nouvel événement
+      description: |
+        Cet endpoint permet à un **Manager** de créer un nouvel événement en fournissant les détails nécessaires.  
+        **Accessible uniquement avec une authentification valide (Manager).**
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+                - organisateur
+                - participants
+                - location
+                - date
+              properties:
+                name:
+                  type: string
+                  description: Le nom de l'événement
+                  example: Sportify
+                description:
+                  type: string
+                  description: Une description détaillée de l'événement
+                  example: >
+                    Le Championnat National de Football est un événement majeur qui rassemble les meilleures équipes de football du Maroc.
+                organisateur:
+                  type: string
+                  description: L'ID de l'organisateur (format MongoDB)
+                  example: 6748417c9bc0c0ecea7f1593
+                participants:
+                  type: integer
+                  description: Le nombre de participants attendus
+                  example: 2455
+                location:
+                  type: string
+                  description: La localisation de l'événement
+                  example: Paris, France
+                date:
+                  type: string
+                  format: date-time
+                  description: La date et l'heure de l'événement
+                  example: 2025-05-15T17:00:00.000Z
+                event_image:
+                  type: object
+                  description: Informations sur l'image associée à l'événement
+                  properties:
+                    url:
+                      type: string
+                      description: URL de l'image
+                      example: https://res.cloudinary.com/dsldmzxqt/image/upload/v1733146499/tortiedty1mkqtff7kdi.png
+                    id:
+                      type: string
+                      nullable: true
+                      description: Identifiant Cloudinary de l'image
+                      example: tortiedty1mkqtff7kdi
+      responses:
+        "201":
+          description: Événement créé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message de succès
+                    example: L'événement a été créé avec succès!
+                  event:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: L'identifiant unique de l'événement
+                        example: 674db7849ed4db3dbd4c6fc2
+                      name:
+                        type: string
+                        description: Le nom de l'événement
+                        example: Sportify
+                      description:
+                        type: string
+                        description: Une description détaillée de l'événement
+                      organisateur:
+                        type: string
+                        description: L'ID de l'organisateur
+                        example: 6748417c9bc0c0ecea7f1593
+                      participants:
+                        type: integer
+                        description: Le nombre de participants attendus
+                        example: 2455
+                      location:
+                        type: string
+                        description: La localisation de l'événement
+                        example: Paris, France
+                      date:
+                        type: string
+                        format: date-time
+                        description: La date et l'heure de l'événement
+                        example: 2025-05-15T17:00:00.000Z
+                      event_image:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            description: URL de l'image
+                            example: https://res.cloudinary.com/dsldmzxqt/image/upload/v1733146499/tortiedty1mkqtff7kdi.png
+                          id:
+                            type: string
+                            nullable: true
+                            description: Identifiant Cloudinary de l'image
+                            example: tortiedty1mkqtff7kdi
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Date de création de l'événement
+                        example: 2024-12-02T13:35:00.803Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        description: Date de la dernière mise à jour de l'événement
+                        example: 2024-12-02T13:35:00.803Z
+                      __v:
+                        type: integer
+                        description: Version de l'événement (pour MongoDB)
+                        example: 0
+        "400":
+          description: Requête invalide (champs manquants ou incorrects)
+        "401":
+          description: Authentification invalide ou non fournie
+        "403":
+          description: Accès refusé - utilisateur sans permissions nécessaires
+        "500":
+          description: Erreur serveur interne

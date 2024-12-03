@@ -1,0 +1,17 @@
+curl -X POST http://localhost:8001/api/v1/manager/event/create \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <your_token>" \
+     -d '{
+       "name": "Tournoi International",
+       "description": "Le Championnat National de Football est un événement majeur qui rassemble les meilleures équipes de football du Maroc. Ce tournoi très attendu verra des équipes s'affronter.",
+       "organisateur": "6748417c9bc0c0ecea7f1593",
+       "participants": 1234,
+       "location": "Paris, France",
+       "date": "2025-05-15T17:00:00.000Z",
+       "event_image": {
+         "url": "https://res.cloudinary.com/dsldmzxqt/image/upload/v1732872762/yu819kzyagd9alu7lcsu.png",
+         "id": "yu819kzyagd9alu7lcsu"
+       }
+     }'
+
+
